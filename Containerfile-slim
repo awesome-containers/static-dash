@@ -1,6 +1,6 @@
-# https://github.com/awesome-containers/static-tar
+# https://github.com/awesome-containers/static-dash
 ARG STATIC_DASH_VERSION=0.5.12
-ARG STATIC_DASH_IMAGE=ghcr.io/awesome-containers/static-tar
+ARG STATIC_DASH_IMAGE=ghcr.io/awesome-containers/static-dash
 
 # https://github.com/awesome-containers/alpine-build-essential
 ARG BUILD_ESSENTIAL_VERSION=3.17
