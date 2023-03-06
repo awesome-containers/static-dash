@@ -1,0 +1,26 @@
+# https://github.com/awesome-containers/static-tar
+ARG STATIC_DASH_VERSION=0.5.12
+ARG STATIC_DASH_IMAGE=ghcr.io/awesome-containers/static-tar
+
+# https://github.com/awesome-containers/alpine-build-essential
+ARG BUILD_ESSENTIAL_VERSION=3.17
+ARG BUILD_ESSENTIAL_IMAGE=ghcr.io/awesome-containers/alpine-build-essential
+
+FROM $STATIC_DASH_IMAGE:$STATIC_DASH_VERSION AS static-dash
+FROM $BUILD_ESSENTIAL_IMAGE:$BUILD_ESSENTIAL_VERSION AS build
+
+WORKDIR /src/
+COPY --from=static-dash /bin/dash ./
+
+RUN set -xeu; \
+    upx --no-progress --no-color dash; \
+    upx -t --no-progress --no-color dash; \
+    chmod -cR 755 dash; \
+    chown -cR 0:0 dash; \
+    ! ldd dash && :; \
+    ln -f dash ash; \
+    ln -f dash sh
+
+# slim static tar image
+FROM scratch
+COPY --from=build /src/ /bin/
